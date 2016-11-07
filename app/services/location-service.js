@@ -18,5 +18,29 @@ export default Ember.Service.extend({
         //handle error
       }
     });
+  },
+  addMap(container) {
+    var lat = this.get('lat');
+    var lng = this.get('lng');
+    if(lat && lng) {
+
+      var container =  this.$('.map-canvas')[0];
+      var options = {
+          center: new window.google.maps.LatLng(
+            this.get('lat'),
+            this.get('lng')
+          ),
+          mapTypeId: 'satellite',
+          zoom: 15
+      };
+      console.log(`Lat: ${lat}, Lng: ${lng}`);
+      var map = new window.google.maps.Map(container, options);
+      new window.google.maps.Marker({
+        position: {lat: lat, lng: lng},
+        map: map,
+        title: 'test'
+      });
+    }
   }
+
 });
