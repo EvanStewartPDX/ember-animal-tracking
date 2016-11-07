@@ -15,7 +15,7 @@ export default Ember.Component.extend({
             this.get('lng')
           ),
           mapTypeId: 'satellite',
-          zoom: 8
+          zoom: 15
       };
       new window.google.maps.Map(container, options);
     }
