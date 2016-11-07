@@ -2,16 +2,16 @@
 <h4>Select a username, password, and avatar for the WILDLIFE TRACKER.</h4>
 <form>
   <div class="form-group">
-    <label for="username">Username</label>
-    {{input value=username id="username"}}
+    <label for="newUsername">Username</label>
+    {{input value=newUsername id="newUsername"}}
   </div>
   <div class="form-group">
-    <label for="password">Password</label>
-    {{input value=password id="password" type="password"}}
+    <label for="newPassword">Password</label>
+    {{input value=newPassword id="newPassword" type="password"}}
   </div>
   <div class="form-group">
-    <label for="avatar">Avatar url</label>
-    {{input value=avatar id="avatar"}}
+    <label for="newAvatar">Avatar url</label>
+    {{input value=newAvatar id="newAvatar"}}
   </div>
   <button class="btn btn-warning" {{action 'createUser'}}>Sign up!</button>
-</div>
+</form>
