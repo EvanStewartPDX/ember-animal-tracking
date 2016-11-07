@@ -1,0 +1,10 @@
+<form {{action 'updateMap' on='submit'}}>
+  <div class='input-group'>
+    <label for='zip'>Zip</label>
+    {{input id='zip' value=zip required=true type=text}}
+  </div>
+  <button class='btn btn-success' type='submit'>Submit</button>
+</form>
+
+
+<div class="map-canvas"></div>
