@@ -1,1 +1,17 @@
-{{yield}}
+<h1> Sign Up!</h1>
+<h4>Select a username, password, and avatar for the WILDLIFE TRACKER.</h4>
+<form>
+  <div class="form-group">
+    <label for="username">Username</label>
+    {{input value=username id="username"}}
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    {{input value=password id="password" type="password"}}
+  </div>
+  <div class="form-group">
+    <label for="avatar">Avatar url</label>
+    {{input value=avatar id="avatar"}}
+  </div>
+  <button class="btn btn-warning" {{action 'createUser'}}>Sign up!</button>
+</div>
