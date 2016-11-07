@@ -1,17 +1,18 @@
 <h1> Login!</h1>
-<form>
-  <div class="form-group">
-    <label for="username">Username</label>
-    {{input value=username id="username"}}
-  </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    {{input value=password id="password" type="password"}}
-  </div>
-  <div class="form-group">
-    <label for="avatar">Avatar url</label>
-    {{input value=avatar id="avatar"}}
-  </div>
+{{#if loginFormOpen}}
+  <form>
+    <div class="form-group">
+      <label for="username">Username</label>
+      {{input value=username id="username" type="username"}}
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      {{input value=password id="password" type="password"}}
+    </div>
 
-  <button class="btn btn-info" {{action 'checkUser'}}>Login</button>
-</form>
+    <button class="btn btn-info" {{action 'login'}}>Login</button>
+  </form>
+{{else}}
+  <button class="btn btn-info" {{action 'showLoginForm'}}>Show Login Form</button>
+  <button class="btn btn-warning" {{action 'hideLoginForm'}}>Hide Login Form</button>
+{{/if}}
