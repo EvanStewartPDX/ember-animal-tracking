@@ -48,9 +48,10 @@ export default Ember.Service.extend({
     var taxa = 'Aves';
     return Ember.$.get('http://api.inaturalist.org/v1/observations?iconic_taxa='+ taxa +'&lat='+ lat +'&lng='+ lng  +'&updated_since=2016&order=desc&order_by=created_at').then(data => {
       data.results.forEach(result => {
+        console.log(result);
         var location = result.location.split(',');
         if(location) {
-          service.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), 'test');
+          service.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), result.species_guess);
         }
       });
     });
