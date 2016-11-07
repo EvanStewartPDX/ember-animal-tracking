@@ -1,0 +1,14 @@
+{ "users": [{
+  "username": "mollykl",
+  "password": "6666",
+  "avatar": "http://catraldoylecreative.com/singleservings/wp-content/uploads/2014/09/mushroom-photography-6-11__880.jpg"
+}, {
+  "username": "its_tim",
+  "password": "1234",
+  "avatar": "http://www.noupe.com/wp-content/uploads/trans/wp-content/uploads/2010/08/93.jpg"
+}, {
+  "username": "laurakrouse94",
+  "password": "3535",
+  "avatar": "https://images.unsplash.com/photo-1470930938908-e8d5c5bd05df?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&s=a3367b8a13778f5fa0653a3c51955a5c"
+  }]
+}

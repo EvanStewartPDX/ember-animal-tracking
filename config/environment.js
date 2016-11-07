@@ -12,6 +12,13 @@ module.exports = function(environment) {
         // e.g. 'with-controller': true
       }
     },
+    firebase: {
+        apiKey: "AIzaSyBwYilB82GAPg9D7CsUjoANsMNPTWkcrWI",
+      authDomain: "wildlife-tracker.firebaseapp.com",
+      databaseURL: "https://wildlife-tracker.firebaseio.com",
+      storageBucket: "wildlife-tracker.appspot.com",
+      messagingSenderId: "307727413352"
+    },
 
     APP: {
       // Here you can pass flags/options to your application instance
