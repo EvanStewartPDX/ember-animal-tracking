@@ -2,3 +2,35 @@
     height: 500px;
     width: 500px;
 }
+
+
+
+header {
+  position: relative;
+}
+
+.headerimg {
+  position: relative;
+  top: -15px;
+  width: 200%;
+  height: 500px;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.headertext {
+  color: white;
+  position: relative;
+  top: -400px;
+
+}
+
+#signin {
+  position: relative;
+  top: 100px;
+}
+
+body {
+  font-family: 'Droid Serif', serif;
+  background-color: #FFF5E2;
+}

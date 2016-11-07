@@ -33,24 +33,24 @@ export default Ember.Component.extend({
 
     },
 
-    var taxa = this.get('type');
-    var lat = "";
-    var long = "";
-    var radius = this.get('zoom');
-
-
-    getResults(results)
-        var results = $.get('http://api.inaturalist.org/v1/observations?iconic_taxa='+ taxa +'&lat='+ lat +'&lng=-'+ lon +'&radius='+ zoom +'&updated_since=2016&order=desc&order_by=created_at').then(function(results) {
-
-        var apiObjects = [];
-        for(var i = 0;i < results.length;i++) {
-        	apiObjects[i] = {
-          	name:result[i].species_guess,
-            photo:result[i].photo.url,
-            location:result[i].location,
-            }
-          }
-        });
+    // var taxa = this.get('type');
+    // var lat = "";
+    // var long = "";
+    // var radius = this.get('zoom');
+    //
+    //
+    // getResults(results)
+    //     var results = $.get('http://api.inaturalist.org/v1/observations?iconic_taxa='+ taxa +'&lat='+ lat +'&lng=-'+ lon +'&radius='+ zoom +'&updated_since=2016&order=desc&order_by=created_at').then(function(results) {
+    //
+    //     var apiObjects = [];
+    //     for(var i = 0;i < results.length;i++) {
+    //     	apiObjects[i] = {
+    //       	name:result[i].species_guess,
+    //         photo:result[i].photo.url,
+    //         location:result[i].location,
+    //         }
+    //       }
+    //     });
 
 
   }
