@@ -3,7 +3,9 @@
     width: 500px;
 }
 
-
+img {
+  width: 400px;
+}
 
 header {
   position: relative;
@@ -33,4 +35,21 @@ header {
 body {
   font-family: 'Droid Serif', serif;
   background-color: #FFF5E2;
+}
+
+.tileimg {
+  position: absolute;
+  top: -250px;
+  right: 300px;
+  border: 8px solid #009696;
+  height: 150px;
+  width: 150px;
+  border-radius: 280px;
+}
+
+.username {
+  position: relative;
+  top: -450px;
+  right: -200px;
+  font-size: 24px;
 }
