@@ -5,32 +5,27 @@ export default Ember.Component.extend({
   lat: null,
   lng: null,
   insertMap: function() {
+    var locationService = this.get('locationService');
     var lat = this.get('lat');
     var lng = this.get('lng');
+    var container = this.$('.map-canvas')[0];
     if(lat && lng) {
-      var container =  this.$('.map-canvas')[0];
-      var options = {
-          center: new window.google.maps.LatLng(
-            this.get('lat'),
-            this.get('lng')
-          ),
-          mapTypeId: 'satellite',
-          zoom: 15
-      };
-      new window.google.maps.Map(container, options);
+      console.log(lat, lng);
+      var map = locationService.addMap(container, lat, lng);
+      locationService.addMarker(map, lat, lng, "test marker");
     }
   }.observes('lat', 'lng'),
+
   actions: {
     updateMap() {
-      var component = this;
       var locationService = this.get('locationService');
+      var component = this;
       var zip = this.get('zip');
       var setLatLng = function(params) {
         component.set('lat', params.lat);
         component.set('lng', params.lng);
       };
       locationService.getLatLngFromZip(zip, setLatLng);
-
     },
 
     // var taxa = this.get('type');
