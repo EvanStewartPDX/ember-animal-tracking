@@ -4,6 +4,8 @@ export default Ember.Service.extend({
   latlng: null,
   infowindows: [],
   detail: null,
+  loading: false,
+
   getLatLngFromZip(address, fn) {
     var geocoder = new window.google.maps.Geocoder();
     var output;
@@ -39,12 +41,17 @@ export default Ember.Service.extend({
     }
   },
 
-  addMarker(map, lat, lng, title, id) {
+  addMarker(map, lat, lng, title, id, pinColor) {
     var service = this;
     var google = window.google;
+    var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+      new google.maps.Size(21, 34),
+      new google.maps.Point(0,0),
+      new google.maps.Point(10, 34));
     var marker = new window.google.maps.Marker({
       position: { lat: lat, lng: lng },
-      map: map
+      map: map,
+      icon: pinImage
     });
     marker['infowindow'] = title;
     marker['observation_id'] = id;
@@ -70,13 +77,38 @@ export default Ember.Service.extend({
 
   getResults(map, lat, lng, radius, taxa) {
     var service = this;
-    // var taxa = 'Aves';
-    console.log(taxa);
     return Ember.$.get(`http://api.inaturalist.org/v1/observations?iconic_taxa=${taxa}&per_page=200&radius=${radius}&page=1&lat=${lat}&lng=${lng}&updated_since=2016&order=desc&order_by=votes`).then(data => {
       data.results.forEach(result => {
         var location = result.location.split(',');
+        var color;
+        switch(result.taxon.iconic_taxon_name) {
+          case 'Aves':
+            color = 'CC0000';
+            break;
+          case 'Mammalia':
+            color = '0000CC';
+            break;
+          case 'Amphibia':
+            color = '00CC00';
+            break;
+          case 'Arachnida':
+            color = '00CCCC';
+            break;
+          case 'Fungi':
+            color = 'CCCC00';
+            break;
+          case 'Insecta':
+            color = '00A0A0';
+            break;
+          case 'Mollusca':
+            color = '9932CC';
+            break;
+          case 'Reptilia':
+            color = 'FFA500';
+            break;
+          }
         if(location) {
-          service.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), result.species_guess, result.id);
+          service.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), result.species_guess, result.id, color);
         }
       });
     });
