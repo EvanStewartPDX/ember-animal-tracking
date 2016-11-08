@@ -10,6 +10,11 @@ export default Ember.Component.extend({
   avesChecked: false,
   mammaliaChecked: false,
   amphibiansChecked: false,
+  arachnidaChecked: false,
+  fungiChecked: false,
+  insectaChecked: false,
+  molluscaChecked: false,
+  reptillaChecked: false,
   loading: false,
 
   onDetailChange: Ember.observer('locationService.detail', function() {
@@ -35,6 +40,21 @@ export default Ember.Component.extend({
       }
       if(this.get('amphibiansChecked')) {
         taxa += 'Amphibia%2C';
+      }
+      if(this.get('arachnidaChecked')) {
+        taxa += 'Arachnida%2C';
+      }
+      if(this.get('fungiChecked')) {
+        taxa += 'Fungi%2C';
+      }
+      if(this.get('insectaChecked')) {
+        taxa += 'Insecta%2C';
+      }
+      if(this.get('molluscaChecked')) {
+        taxa += 'Mollusca%2C';
+      }
+      if(this.get('reptillaChecked')) {
+        taxa += 'Reptilia%2C';
       }
 
       var zoom;
@@ -66,7 +86,7 @@ export default Ember.Component.extend({
         this.set('loading', false);
       });
     }
-  }.observes('lat', 'lng', 'radius', 'avesChecked', 'mammaliaChecked', 'amphibiansChecked'),
+  }.observes('lat', 'lng', 'radius', 'avesChecked', 'mammaliaChecked', 'amphibiansChecked', 'arachnidaChecked', 'fungiChecked', 'insectaChecked', 'molluscaChecked', 'reptillaChecked'),
 
   actions: {
     updateMap() {
@@ -77,10 +97,9 @@ export default Ember.Component.extend({
       var setLatLng = function(params) {
         component.set('lat', params.lat);
         component.set('lng', params.lng);
+        component.set('detail', null);
       };
-      locationService.getLatLngFromZip(address, setLatLng).then(() => {
-        this.set('loading', false);
-      });
+      locationService.getLatLngFromZip(address, setLatLng);
     },
 
     addMarker() {
