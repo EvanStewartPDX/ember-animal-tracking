@@ -12,6 +12,7 @@ export default Ember.Component.extend({
         user: this.get('userAuthentication')
       };
       this.sendAction('login', params);
+      this.set('loginFormOpen', false);
     },
     showLoginForm() {
       this.set('loginFormOpen', true);
