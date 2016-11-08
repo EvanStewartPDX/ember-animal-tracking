@@ -8,6 +8,7 @@ export default Ember.Route.extend({
 
   actions: {
     login(params) {
+      var route=this;
       this.store.query('user', {
         orderBy: 'username',
         equalTo: params.username
@@ -21,6 +22,7 @@ export default Ember.Route.extend({
         else {
           alert("You have successfully logged in!");
           params.user.login(foundUser.get('firstObject'));
+          route.transitionTo('map');
         }
       }, function(error) {
         console.log(error);
@@ -31,7 +33,7 @@ export default Ember.Route.extend({
       var newUser = this.store.createRecord('user', params);
       newUser.save();
       this.transitionTo('index');
-      alert('Congratulations, you have successfully signed up with WILDLIFE TRACKER! Now log in with your credentials.')
+      alert('Congratulations, you have successfully signed up with WILDLIFE TRACKER! Now log in with your credentials.');
     }
   }
 });

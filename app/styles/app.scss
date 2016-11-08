@@ -1,3 +1,6 @@
+@import "ember-modal-dialog/ember-modal-structure";
+@import "ember-modal-dialog/ember-modal-appearance";
+
 .map-canvas {
     height: 500px;
     width: 500px;
@@ -75,4 +78,9 @@ body {
   border: 5px solid white;
   height: 200px;
   background-color: white;
+}
+
+.markerImg {
+  width: 12px;
+  height: auto;
 }

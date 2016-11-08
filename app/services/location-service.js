@@ -3,6 +3,9 @@ import Ember from 'ember';
 export default Ember.Service.extend({
   latlng: null,
   infowindows: [],
+  detail: null,
+  loading: false,
+
   getLatLngFromZip(address, fn) {
     var geocoder = new window.google.maps.Geocoder();
     var output;
@@ -19,12 +22,12 @@ export default Ember.Service.extend({
     });
   },
 
-  addMap(container, lat, lng) {
+  addMap(container, lat, lng, zoom) {
     if(lat && lng) {
       var options = {
           center: new window.google.maps.LatLng(lat, lng),
           mapTypeId: 'satellite',
-          zoom: 10
+          zoom: zoom
       };
       var map = new window.google.maps.Map(container, options);
       var infowindow;
@@ -38,14 +41,20 @@ export default Ember.Service.extend({
     }
   },
 
-  addMarker(map, lat, lng, title) {
+  addMarker(map, lat, lng, title, id, pinColor) {
     var service = this;
     var google = window.google;
+    var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+      new google.maps.Size(21, 34),
+      new google.maps.Point(0,0),
+      new google.maps.Point(10, 34));
     var marker = new window.google.maps.Marker({
       position: { lat: lat, lng: lng },
-      map: map
+      map: map,
+      icon: pinImage
     });
     marker['infowindow'] = title;
+    marker['observation_id'] = id;
 
     google.maps.event.addListener(marker , 'click', function(){
       var infowindows = service.get('infowindows');
@@ -54,6 +63,10 @@ export default Ember.Service.extend({
           window.close();
         });
       }
+      service.set('detail_id', id);
+      service.getSingleResults(id).then(detail => {
+        service.set('detail', detail);
+      });
       var infowindow = new google.maps.InfoWindow({});
       infowindows.pushObject(infowindow);
       infowindow.setContent(this['infowindow']);
@@ -62,17 +75,54 @@ export default Ember.Service.extend({
     });
   },
 
-  getResults(map, lat, lng) {
+  getResults(map, lat, lng, radius, taxa) {
     var service = this;
-    var taxa = 'Aves';
-    return Ember.$.get(`http://api.inaturalist.org/v1/observations?iconic_taxa=${taxa}&per_page=200&radius=10&page=1&lat=${lat}&lng=${lng}&updated_since=2016&order=desc&order_by=votes`).then(data => {
-      console.log(data);
+    return Ember.$.get(`http://api.inaturalist.org/v1/observations?iconic_taxa=${taxa}&per_page=200&radius=${radius}&page=1&lat=${lat}&lng=${lng}&updated_since=2016&order=desc&order_by=votes`).then(data => {
       data.results.forEach(result => {
         var location = result.location.split(',');
+        var color;
+        switch(result.taxon.iconic_taxon_name) {
+          case 'Aves':
+            color = 'CC0000';
+            break;
+          case 'Mammalia':
+            color = '0000CC';
+            break;
+          case 'Amphibia':
+            color = '00CC00';
+            break;
+          case 'Arachnida':
+            color = '00CCCC';
+            break;
+          case 'Fungi':
+            color = 'CCCC00';
+            break;
+          case 'Insecta':
+            color = '00A0A0';
+            break;
+          case 'Mollusca':
+            color = '9932CC';
+            break;
+          case 'Reptilia':
+            color = 'FFA500';
+            break;
+          }
         if(location) {
-          service.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), result.species_guess);
+          var title;
+          if (result.species_guess) {
+            title = result.species_guess;
+          } else {
+            title = result.taxon.name;
+          }
+          service.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), title, result.id, color);
         }
       });
+    });
+  },
+
+  getSingleResults(id) {
+    return Ember.$.get(`http://api.inaturalist.org/v1/observations/${id}`).then(data => {
+      return data.results[0];
     });
   }
 

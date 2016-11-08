@@ -1,11 +1,116 @@
 <form {{action 'updateMap' on='submit'}}>
 
   <div class='form-group'>
-    <label for='address'>Address</label>
+    <label for='address'>Place</label>
     {{input id='address' value=address required=true type=text class='form-control'}}
+  </div>
+
+  <div class="form-group">
+
+      <div class="checkbox-inline">
+        <label>
+          {{input type="checkbox" checked=avesChecked}}
+          {{#if avesChecked}}
+            <img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|CC0000" class='markerImg'>
+          {{/if}}
+          Birds
+        </label>
+      </div>
+
+      <div class="checkbox-inline">
+        <label>
+          {{input type="checkbox" checked=mammaliaChecked}}
+          {{#if mammaliaChecked}}
+            <img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|0000CC" class='markerImg'>
+          {{/if}}
+          Mammals
+        </label>
+      </div>
+
+      <div class="checkbox-inline">
+        <label>
+          {{input type="checkbox" checked=amphibiansChecked}}
+          {{#if amphibiansChecked}}
+            <img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|00CC00" class='markerImg'>
+          {{/if}}
+          Amphibians
+        </label>
+      </div>
+
+      <div class="checkbox-inline">
+        <label>
+          {{input type="checkbox" checked=arachnidaChecked}}
+          {{#if arachnidaChecked}}
+            <img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|00CCCC" class='markerImg'>
+          {{/if}}
+          Spiders
+        </label>
+      </div>
+
+      <div class="checkbox-inline">
+        <label>
+          {{input type="checkbox" checked=fungiChecked}}
+          {{#if fungiChecked}}
+            <img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|CCCC00" class='markerImg'>
+          {{/if}}
+          Fungi
+        </label>
+      </div>
+
+      <div class="checkbox-inline">
+        <label>
+          {{input type="checkbox" checked=insectaChecked}}
+          {{#if insectaChecked}}
+            <img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|00A0A0" class='markerImg'>
+          {{/if}}
+          Insects
+        </label>
+      </div>
+
+      <div class="checkbox-inline">
+        <label>
+          {{input type="checkbox" checked=molluscaChecked}}
+          {{#if molluscaChecked}}
+            <img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|9932CC" class='markerImg'>
+          {{/if}}
+          Mollusks
+        </label>
+      </div>
+
+      <div class="checkbox-inline">
+        <label>
+          {{input type="checkbox" checked=reptillaChecked}}
+          {{#if reptillaChecked}}
+            <img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FFA500" class='markerImg'>
+          {{/if}}
+          Reptiles
+        </label>
+      </div>
+
+    </div>
+    <div class="form">
+      <label for="radius">Radius in Miles</label>
+      <select class="form" id="radius" onchange={{action 'radiusChange' value='target.value'}}>
+        <option value="1">1</option>
+        <option value="7">5</option>
+        <option value="16">10</option>
+        <option value="40">25</option>
+        <option value="90">50</option>
+        <option value="160">100</option>
+      </select>
   </div>
 
   <button class='btn btn-success' type='submit'>Submit</button>
 </form>
 
-<div class="map-canvas"></div>
+{{#if loading}}
+  <h1>Loading...</h1>
+{{/if}}
+<div class='row'>
+  <div class='col-md-6'>
+    <div class="map-canvas"></div>
+  </div>
+  <div class='col-md-6'>
+    {{wildlife-detail detail=locationService.detail}}
+  </div>
+</div>
