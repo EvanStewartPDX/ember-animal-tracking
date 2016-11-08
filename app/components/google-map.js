@@ -97,6 +97,7 @@ export default Ember.Component.extend({
       var setLatLng = function(params) {
         component.set('lat', params.lat);
         component.set('lng', params.lng);
+        component.set('detail', null);
       };
       locationService.getLatLngFromZip(address, setLatLng);
     },

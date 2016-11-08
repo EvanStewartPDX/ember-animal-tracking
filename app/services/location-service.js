@@ -57,21 +57,21 @@ export default Ember.Service.extend({
     marker['observation_id'] = id;
 
     google.maps.event.addListener(marker , 'click', function(){
-      // var infowindows = service.get('infowindows');
-      // if(infowindows) {
-      //   infowindows.forEach(window => {
-      //     window.close();
-      //   });
-      // }
-      // service.set('detail_id', id);
+      var infowindows = service.get('infowindows');
+      if(infowindows) {
+        infowindows.forEach(window => {
+          window.close();
+        });
+      }
+      service.set('detail_id', id);
       service.getSingleResults(id).then(detail => {
         service.set('detail', detail);
       });
-      // var infowindow = new google.maps.InfoWindow({});
-      // infowindows.pushObject(infowindow);
-      // infowindow.setContent(this['infowindow']);
-      // service.set('openWindow', this);
-      // infowindow.open(map, this);
+      var infowindow = new google.maps.InfoWindow({});
+      infowindows.pushObject(infowindow);
+      infowindow.setContent(this['infowindow']);
+      service.set('openWindow', this);
+      infowindow.open(map, this);
     });
   },
 
@@ -108,7 +108,13 @@ export default Ember.Service.extend({
             break;
           }
         if(location) {
-          service.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), result.species_guess, result.id, color);
+          var title;
+          if (result.species_guess) {
+            title = result.species_guess;
+          } else {
+            title = result.taxon.name;
+          }
+          service.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), title, result.id, color);
         }
       });
     });
