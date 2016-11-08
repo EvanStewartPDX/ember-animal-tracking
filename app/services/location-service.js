@@ -5,6 +5,7 @@ export default Ember.Service.extend({
   infowindows: [],
   detail: null,
   loading: false,
+  activities: Ember.A([]),
 
   getLatLngFromZip(address, fn) {
     var geocoder = new window.google.maps.Geocoder();
@@ -37,21 +38,28 @@ export default Ember.Service.extend({
             infowindow.close();
         }
       });
+      // google.maps.event.addListener(map,'bounds_changed', function() {
+      //   var swLat = map.getBounds().getSouthWest().lat();
+      //  var swLng = map.getBounds().getSouthWest().lng();
+      //  var neLat = map.getBounds().getNorthEast().lat();
+      //  var neLng = map.getBounds().getNorthEast().lng();
+      //  console.log('swLat: ' + swLat);
+      //  console.log('swLng: ' + swLng);
+      //  console.log('neLat: ' + neLat);
+      //  console.log('neLng: ' + neLng);
+      // });
       return map;
     }
   },
 
-  addMarker(map, lat, lng, title, id, pinColor) {
+  addMarker(map, lat, lng, title, id, markerImg, type) {
     var service = this;
     var google = window.google;
-    var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
-      new google.maps.Size(21, 34),
-      new google.maps.Point(0,0),
-      new google.maps.Point(10, 34));
+
     var marker = new window.google.maps.Marker({
       position: { lat: lat, lng: lng },
       map: map,
-      icon: pinImage
+      icon: markerImg
     });
     marker['infowindow'] = title;
     marker['observation_id'] = id;
@@ -63,10 +71,17 @@ export default Ember.Service.extend({
           window.close();
         });
       }
+
       service.set('detail_id', id);
-      service.getSingleResults(id).then(detail => {
-        service.set('detail', detail);
-      });
+      service.set('detail_type', type);
+      if(type === 'animal') {
+        service.getSingleResults(id).then(detail => {
+          service.set('detail', detail);
+        });
+      } else if (type === 'activity') {
+        service.getSingleActivityResults(id);
+      }
+
       var infowindow = new google.maps.InfoWindow({});
       infowindows.pushObject(infowindow);
       infowindow.setContent(this['infowindow']);
@@ -75,12 +90,26 @@ export default Ember.Service.extend({
     });
   },
 
+  createMarkerImgFromColor(color) {
+    var google = window.google;
+    return new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + color,
+      new google.maps.Size(21, 34),
+      new google.maps.Point(0,0),
+      new google.maps.Point(10, 34));
+  },
+
+  createMarkerImg() {
+    var google = window.google;
+    return new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/campground.png");
+  },
+
   getResults(map, lat, lng, radius, taxa) {
+    this.getCampsites(map, lat, lng, radius);
     var service = this;
     return Ember.$.get(`http://api.inaturalist.org/v1/observations?iconic_taxa=${taxa}&per_page=200&radius=${radius}&page=1&lat=${lat}&lng=${lng}&updated_since=2016&order=desc&order_by=votes`).then(data => {
       data.results.forEach(result => {
         var location = result.location.split(',');
-        var color;
+        var color = '000000';
         switch(result.taxon.iconic_taxon_name) {
           case 'Aves':
             color = 'CC0000';
@@ -107,6 +136,7 @@ export default Ember.Service.extend({
             color = 'FFA500';
             break;
           }
+          var markerImg = this.createMarkerImgFromColor(color);
         if(location) {
           var title;
           if (result.species_guess) {
@@ -114,7 +144,7 @@ export default Ember.Service.extend({
           } else {
             title = result.taxon.name;
           }
-          service.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), title, result.id, color);
+          service.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), title, result.id, markerImg, 'animal');
         }
       });
     });
@@ -124,6 +154,28 @@ export default Ember.Service.extend({
     return Ember.$.get(`http://api.inaturalist.org/v1/observations/${id}`).then(data => {
       return data.results[0];
     });
+  },
+
+  getSingleActivityResults(id) {
+    var detail = this.get('activities').find(x => { return x.unique_id === id; });
+    this.set('detail', detail);
+  },
+
+  getCampsites(map, lat, lng, radius) {
+    var service = this;
+    Ember.$.ajax({
+         url: `https://trailapi-trailapi.p.mashape.com/?lat=${lat}&limit=25&lon=${lng}&radius=${radius}`,
+         type: "GET",
+         beforeSend: function(xhr){xhr.setRequestHeader('X-Mashape-Key', 'Poz6aqze7Umshf3xwOZPtqq5rpYLp1A7ofGjsnbUXhxDCjqT8x');},
+         success: function(response) {
+           console.log(response.places);
+           var markerImg = service.createMarkerImg();
+           response.places.forEach(place => {
+             service.get('activities').pushObject(place);
+             service.addMarker(map, parseFloat(place.lat), parseFloat(place.lon), place.name, place.unique_id, markerImg, 'activity');
+           });
+         }
+      });
   }
 
 });

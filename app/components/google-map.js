@@ -19,7 +19,7 @@ export default Ember.Component.extend({
 
   onDetailChange: Ember.observer('locationService.detail', function() {
     var locationService = this.get('locationService');
-    console.log(locationService.detail);
+    // console.log(locationService.detail);
     this.set('detail', locationService.detail);
   }).on('init'),
 

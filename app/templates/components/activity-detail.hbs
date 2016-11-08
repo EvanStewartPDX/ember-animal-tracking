@@ -1,0 +1,14 @@
+{{#if detail}}
+  <h3>Details</h3>
+  <p>Name: {{detail.name}}</p>
+  <p>{{detail.description}}</p>
+
+
+  {{#if detail.activities}}
+    <h4>Activities:</h4>
+    {{#each detail.activities as |activity|}}
+      <p>Activity type: {{activity.activity_type_name}}</p>
+      <p>More info: <a href={{activity.url}}>{{activity.url}}</a></p>
+    {{/each}}
+  {{/if}}
+{{/if}}

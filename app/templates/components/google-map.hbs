@@ -111,6 +111,11 @@
     <div class="map-canvas"></div>
   </div>
   <div class='col-md-6'>
-    {{wildlife-detail detail=locationService.detail}}
+    {{#if (eq locationService.detail_type 'animal')}}
+      {{wildlife-detail detail=locationService.detail}}
+    {{/if}}
+    {{#if (eq locationService.detail_type 'activity')}}
+      {{activity-detail detail=locationService.detail}}
+    {{/if}}
   </div>
 </div>
