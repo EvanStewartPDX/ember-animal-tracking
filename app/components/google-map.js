@@ -15,7 +15,6 @@ export default Ember.Component.extend({
       console.log(lat, lng);
       var map = locationService.addMap(container, lat, lng);
       this.set('map', map);
-      // locationService.addMarker(map, lat, lng, "test marker");
       locationService.getResults(map, lat,lng);
     }
   }.observes('lat', 'lng'),
@@ -42,24 +41,5 @@ export default Ember.Component.extend({
     },
 
   }
-
-    // var taxa = this.get('type');
-    // var lat = "";
-    // var long = "";
-    // var radius = this.get('zoom');
-    //
-    //
-
-    //
-    //
-    //     var apiObjects = [];
-    //     for(var i = 0;i < results.length;i++) {
-    //     	apiObjects[i] = {
-    //       	name:result[i].species_guess,
-    //         photo:result[i].photo.url,
-    //         location:result[i].location,
-    //         }
-    //       }
-    //     });
 
 });
