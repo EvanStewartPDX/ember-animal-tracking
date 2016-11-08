@@ -1,4 +1,4 @@
+{{#if userAuthentication.currentUser}}
 
-<div class="col-md-4">
-<ul> Current User: {{userAuthentication.username}} <img src={{userAuthentication.avatar}}></ul>
-</div>
+<div class="username"> {{userAuthentication.username}}</div> <img class="tileimg" src={{userAuthentication.avatar}}>
+{{/if}}

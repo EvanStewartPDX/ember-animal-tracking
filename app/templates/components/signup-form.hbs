@@ -1,17 +1,22 @@
 <h3> Sign Up!</h3>
-<h4>Select a username, password, and avatar for the WILDLIFE TRACKER.</h4>
-<form>
-  <div class="form-group">
-    <label for="newUsername">Username</label>
-    {{input value=newUsername id="newUsername"}}
-  </div>
-  <div class="form-group">
-    <label for="newPassword">Password</label>
-    {{input value=newPassword id="newPassword" type="password"}}
-  </div>
-  <div class="form-group">
-    <label for="newAvatar">Avatar url</label>
-    {{input value=newAvatar id="newAvatar"}}
-  </div>
-  <button class="btn btn-warning" {{action 'createUser'}}>Sign up!</button>
-</form>
+{{#if signupFormOpen}}
+  <h4>Select a username, password, and avatar for the WILDLIFE TRACKER.</h4>
+  <form>
+    <div class="form-group">
+      <label for="newUsername">Username</label>
+      {{input value=newUsername id="newUsername"}}
+    </div>
+    <div class="form-group">
+      <label for="newPassword">Password</label>
+      {{input value=newPassword id="newPassword" type="password"}}
+    </div>
+    <div class="form-group">
+      <label for="newAvatar">Avatar url</label>
+      {{input value=newAvatar id="newAvatar"}}
+    </div>
+    <button class="btn btn-info" {{action 'createUser'}}>Sign up!</button>
+    <button class="btn btn-warning" {{action 'hideSignupForm'}}>Hide Signup Form</button>
+  </form>
+{{else}}
+  <button class="btn btn-info" {{action 'showSingupForm'}}>Show Signup Form</button>
+{{/if}}
