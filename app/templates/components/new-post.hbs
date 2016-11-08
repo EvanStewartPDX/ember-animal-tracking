@@ -1,4 +1,5 @@
 {{#if addNewPost}}
+<div class="newPost">
 <h1>New Post</h1>
   <div>
     <form>
@@ -14,9 +15,10 @@
         <label for="content">Content</label>
         {{input value=content id="content"}}
       </div>
-      <button {{action 'savePost'}}>Save</button>
+      <button class="btn btn-warning" {{action 'savePost'}}>Save</button>
     </form>
   </div>
+</div>
 {{else}}
-  <button {{action 'postFormShow'}}>New Post</button>
+  <button class="btn btn-warning" {{action 'postFormShow'}}>New Post</button>
 {{/if}}

@@ -5,5 +5,8 @@ export default Ember.Component.extend({
     delete(post) {
       this.sendAction('delete', post);
     },
+    update(post, params) {
+      this.sendAction('update', post, params);
+    }
   }
 });

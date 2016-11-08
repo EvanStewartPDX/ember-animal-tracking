@@ -1,0 +1,27 @@
+{{#if updatePostForm}}
+  <h4>Update {{post.author}}'s post</h4>
+  {{#modal-dialog}}
+    <div>
+      <form>
+        <div class="form-group">
+          <label for="owner">Title</label>
+          {{input value=title id="title" placeholder=post.title}}
+        </div>
+
+        <div class="form-group">
+          <label for="type">Author</label>
+          {{input value=author id="author" placeholder=post.author}}
+        </div>
+
+        <div class="form-group">
+          <label for="city">Content</label>
+          {{input value=content id="content" placeholder=post.content}}
+        </div>
+
+        <button {{action 'update' post}}>Save</button>
+      </form>
+    </div>
+  {{/modal-dialog}}
+{{else}}
+  <button class="btn btn-danger"{{action 'showUpdateForm'}}>Update</button>
+{{/if}}
