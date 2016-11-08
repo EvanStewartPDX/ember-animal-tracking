@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
   latlng: null,
+  infowindows: [],
   getLatLngFromZip(address, fn) {
     var geocoder = new window.google.maps.Geocoder();
     var output;
@@ -23,22 +24,40 @@ export default Ember.Service.extend({
       var options = {
           center: new window.google.maps.LatLng(lat, lng),
           mapTypeId: 'satellite',
-          zoom: 15
+          zoom: 10
       };
-      return new window.google.maps.Map(container, options);
+      var map = new window.google.maps.Map(container, options);
+      var infowindow;
+      var google = window.google;
+      google.maps.event.addListener(map, 'click', function() {
+        if (infowindow) {
+            infowindow.close();
+        }
+      });
+      return map;
     }
   },
 
   addMarker(map, lat, lng, title) {
+    var service = this;
     var google = window.google;
     var marker = new window.google.maps.Marker({
       position: { lat: lat, lng: lng },
       map: map
     });
     marker['infowindow'] = title;
-    var infowindow = new google.maps.InfoWindow({});
+
     google.maps.event.addListener(marker , 'click', function(){
+      var infowindows = service.get('infowindows');
+      if(infowindows) {
+        infowindows.forEach(window => {
+          window.close();
+        });
+      }
+      var infowindow = new google.maps.InfoWindow({});
+      infowindows.pushObject(infowindow);
       infowindow.setContent(this['infowindow']);
+      service.set('openWindow', this);
       infowindow.open(map, this);
     });
   },
@@ -46,9 +65,9 @@ export default Ember.Service.extend({
   getResults(map, lat, lng) {
     var service = this;
     var taxa = 'Aves';
-    return Ember.$.get('http://api.inaturalist.org/v1/observations?iconic_taxa='+ taxa +'&lat='+ lat +'&lng='+ lng  +'&updated_since=2016&order=desc&order_by=created_at').then(data => {
+    return Ember.$.get(`http://api.inaturalist.org/v1/observations?iconic_taxa=${taxa}&per_page=200&radius=10&page=1&lat=${lat}&lng=${lng}&updated_since=2016&order=desc&order_by=votes`).then(data => {
+      console.log(data);
       data.results.forEach(result => {
-        console.log(result);
         var location = result.location.split(',');
         if(location) {
           service.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), result.species_guess);
