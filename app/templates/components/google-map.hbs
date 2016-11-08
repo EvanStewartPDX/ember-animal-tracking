@@ -1,11 +1,44 @@
 <form {{action 'updateMap' on='submit'}}>
 
   <div class='form-group'>
-    <label for='address'>Address</label>
+    <label for='address'>Place</label>
     {{input id='address' value=address required=true type=text class='form-control'}}
+  </div>
+
+  <div class="form-group">
+      <div class="checkbox-inline">
+        <label>{{input type="checkbox" checked=avesChecked}}Birds</label>
+      </div>
+      <div class="checkbox-inline">
+        <label>{{input type="checkbox" checked=mammaliaChecked}}Mammals</label>
+      </div>
+      <div class="checkbox-inline">
+        <label>{{input type="checkbox" checked=amphibiansChecked}}Amphibians</label>
+      </div>
+    </div>
+    <div class="form">
+      <label for="radius">Radius in Miles</label>
+      <select class="form" id="radius" onchange={{action 'radiusChange' value='target.value'}}>
+        <option value="1">1</option>
+        <option value="7">5</option>
+        <option value="16">10</option>
+        <option value="40">25</option>
+        <option value="90">50</option>
+        <option value="160">100</option>
+      </select>
   </div>
 
   <button class='btn btn-success' type='submit'>Submit</button>
 </form>
 
-<div class="map-canvas"></div>
+{{#if loading}}
+  <h1>Loading...</h1>
+{{/if}}
+<div class='row'>
+  <div class='col-md-6'>
+    <div class="map-canvas"></div>
+  </div>
+  <div class='col-md-6'>
+    {{wildlife-detail detail=locationService.detail}}
+  </div>
+</div>

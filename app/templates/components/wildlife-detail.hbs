@@ -1,0 +1,10 @@
+{{#if detail}}
+  <h3>Details</h3>
+  <p>Name: {{detail.species_guess}}</p>
+  <p>Date: {{detail.observed_on}}</p>
+  <p>Location: {{detail.place_guess}}</p>
+
+  {{#if detail.taxon.default_photo.medium_url}}
+    <img src={{detail.taxon.default_photo.medium_url}}>
+  {{/if}}
+{{/if}}

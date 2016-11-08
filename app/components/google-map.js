@@ -5,22 +5,72 @@ export default Ember.Component.extend({
   lat: null,
   lng: null,
   map: null,
+  detail: null,
+  radius: 1,
+  avesChecked: false,
+  mammaliaChecked: false,
+  amphibiansChecked: false,
+  loading: false,
+
+  onDetailChange: Ember.observer('locationService.detail', function() {
+    var locationService = this.get('locationService');
+    console.log(locationService.detail);
+    this.set('detail', locationService.detail);
+  }).on('init'),
 
   insertMap: function() {
+
     var locationService = this.get('locationService');
     var lat = this.get('lat');
     var lng = this.get('lng');
     var container = this.$('.map-canvas')[0];
     if(lat && lng) {
-      console.log(lat, lng);
-      var map = locationService.addMap(container, lat, lng);
+      this.set('loading', true);
+      var taxa = "";
+      if(this.get('avesChecked')) {
+        taxa += 'Aves%2C';
+      }
+      if(this.get('mammaliaChecked')) {
+        taxa += 'Mammalia%2C';
+      }
+      if(this.get('amphibiansChecked')) {
+        taxa += 'Amphibia%2C';
+      }
+
+      var zoom;
+      switch(this.get('radius')) {
+        case 1:
+          zoom = 14;
+          break;
+        case 7:
+          zoom = 12;
+          break;
+        case 16:
+          zoom = 10;
+          break;
+        case 40:
+          zoom = 9;
+          break;
+        case 90:
+          zoom = 8;
+          break;
+        case 160:
+          zoom = 7;
+          break;
+      }
+
+      var map = locationService.addMap(container, lat, lng, zoom);
       this.set('map', map);
-      locationService.getResults(map, lat,lng);
+      var radius = this.get('radius');
+      locationService.getResults(map, lat, lng, radius, taxa).then(() => {
+        this.set('loading', false);
+      });
     }
-  }.observes('lat', 'lng'),
+  }.observes('lat', 'lng', 'radius', 'avesChecked', 'mammaliaChecked', 'amphibiansChecked'),
 
   actions: {
     updateMap() {
+      this.set('loading', true);
       var locationService = this.get('locationService');
       var component = this;
       var address = this.get('address');
@@ -28,7 +78,9 @@ export default Ember.Component.extend({
         component.set('lat', params.lat);
         component.set('lng', params.lng);
       };
-      locationService.getLatLngFromZip(address, setLatLng);
+      locationService.getLatLngFromZip(address, setLatLng).then(() => {
+        this.set('loading', false);
+      });
     },
 
     addMarker() {
@@ -40,6 +92,13 @@ export default Ember.Component.extend({
       locationService.addMarker(map, lat, lng, title);
     },
 
-  }
+    radiusChange(value) {
+      this.set('radius', parseInt(value));
+    },
+
+    // avesChange() {
+    //   console.log(this.get('avesCheck'));
+    // }
+  },
 
 });
