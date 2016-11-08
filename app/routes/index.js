@@ -25,6 +25,13 @@ export default Ember.Route.extend({
       }, function(error) {
         console.log(error);
       });
+    },
+
+    saveUser(params) {
+      var newUser = this.store.createRecord('user', params);
+      newUser.save();
+      this.transitionTo('index');
+      alert('Congratulations, you have successfully signed up with WILDLIFE TRACKER! Now log in with your credentials.')
     }
   }
 });
