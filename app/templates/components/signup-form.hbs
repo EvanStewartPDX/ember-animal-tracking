@@ -2,6 +2,7 @@
 {{#if signupFormOpen}}
   <h4>Select a username, password, and avatar for the WILDLIFE TRACKER.</h4>
   <form>
+    <div class="signupForm">
     <div class="form-group">
       <label for="newUsername">Username</label>
       {{input value=newUsername id="newUsername"}}
@@ -16,6 +17,7 @@
     </div>
     <button class="btn btn-info" {{action 'saveUser'}}>Sign up!</button>
     <button class="btn btn-warning" {{action 'hideSignupForm'}}>Hide Signup Form</button>
+  </div>
   </form>
 
 {{else}}
