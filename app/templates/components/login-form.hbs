@@ -1,21 +1,24 @@
 <h3> Login!</h3>
 {{#if loginFormOpen}}
-  <form>
-    <div class="loginform">
-    <div class="form-control">
-      <label for="username">Username</label>
-      {{input value=username id="username" type="username"}}
+  {{#modal-dialog
+                  translucentOverlay=true}}
+    <form>
+      <div class="loginform">
+      <div class="form-control">
+        <label for="username">Username</label>
+        {{input value=username id="username" type="username"}}
+      </div>
+      <br>
+      <div class="form-control">
+        <label for="password">Password</label>
+        {{input value=password id="password" type="password"}}
+      </div>
+  <br>
+      <button class="btn btn-info" {{action 'login'}}>Login</button>
+      <button class="btn btn-warning" {{action 'hideLoginForm'}}>Hide Login Form</button>
     </div>
-    <br>
-    <div class="form-control">
-      <label for="password">Password</label>
-      {{input value=password id="password" type="password"}}
-    </div>
-<br>
-    <button class="btn btn-info" {{action 'login'}}>Login</button>
-    <button class="btn btn-warning" {{action 'hideLoginForm'}}>Hide Login Form</button>
-  </div>
-  </form>
+    </form>
+  {{/modal-dialog}}
 {{else}}
   <button class="btn btn-info" {{action 'showLoginForm'}}>Show Login Form</button>
 {{/if}}
