@@ -1,5 +1,11 @@
-{{#each model.posts as |post|}}
-{{post-tile post=post}}
-{{/each}}
+  <center>
+    <h3> Welcome to the Wildlife tracking forum!
+      <p></p>Feel free to post any questions or comments you have as a wildlife tracker!</h3>
+  </center>
 
-{{new-post savePost="savePost"}}
+  {{new-post savePost="savePost"}}
+
+  {{#each model.posts as |post|}}
+  {{post-tile post=post}}
+
+  {{/each}}

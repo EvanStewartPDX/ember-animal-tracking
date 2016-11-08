@@ -17,6 +17,15 @@ export default Ember.Route.extend({
       });
       post.save();
       this.transitionTo('forum');
+    },
+    saveReply(params) {
+      var newReply = this.store.createRecord('reply', params);
+      var post = params.post;
+      post.get('replies').addObject(newReply);
+      newReply.save().then(function() {
+        return post.save();
+      });
+      this.transitionTo('post', post);
     }
   }
 });
