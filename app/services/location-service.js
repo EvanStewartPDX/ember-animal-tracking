@@ -16,6 +16,8 @@ export default Ember.Service.extend({
   Insecta: Ember.A([]),
   Mollusca: Ember.A([]),
   Reptilia: Ember.A([]),
+  Campgrounds: Ember.A([]),
+  showCampgrounds: false,
 
   getLatLngFromZip(address, fn) {
     var geocoder = new window.google.maps.Geocoder();
@@ -41,7 +43,8 @@ export default Ember.Service.extend({
       var options = {
           center: new google.maps.LatLng(lat, lng),
           mapTypeId: 'satellite',
-          zoom: zoomLevel
+          zoom: zoomLevel,
+          disableDefaultUI: true
       };
       var map = new google.maps.Map(container, options);
       service.set('map', map);
@@ -236,19 +239,26 @@ export default Ember.Service.extend({
     var service = this;
     var latLngRad = this.get('latLngRad');
     var map = this.get('map');
-    Ember.$.ajax({
-         url: `https://trailapi-trailapi.p.mashape.com/?lat=${latLngRad.lat}&limit=25&lon=${latLngRad.lng}&radius=${latLngRad.rad}`,
-         type: "GET",
-         beforeSend: function(xhr){xhr.setRequestHeader('X-Mashape-Key', 'Poz6aqze7Umshf3xwOZPtqq5rpYLp1A7ofGjsnbUXhxDCjqT8x');},
-         success: function(response) {
-           var markerImg = service.createMarkerImg();
-           response.places.forEach(place => {
-             service.get('activities').pushObject(place);
-             service.addMarker(map, parseFloat(place.lat), parseFloat(place.lon), place.name, place.unique_id, markerImg, 'activity');
-           });
-         }
+    if(service.get('showCampgrounds')) {
+      Ember.$.ajax({
+           url: `https://trailapi-trailapi.p.mashape.com/?lat=${latLngRad.lat}&limit=25&lon=${latLngRad.lng}&radius=${latLngRad.rad}`,
+           type: "GET",
+           beforeSend: function(xhr){xhr.setRequestHeader('X-Mashape-Key', 'Poz6aqze7Umshf3xwOZPtqq5rpYLp1A7ofGjsnbUXhxDCjqT8x');},
+           success: function(response) {
+             var markerImg = service.createMarkerImg();
+             response.places.forEach(place => {
+               service.get('activities').pushObject(place);
+               var marker = service.addMarker(map, parseFloat(place.lat), parseFloat(place.lon), place.name, place.unique_id, markerImg, 'activity');
+               service.get('Campgrounds').pushObject(marker);
+             });
+           }
+        });
+    } else {
+      service.get('Campgrounds').forEach(marker => {
+        marker.setMap(null);
       });
-  }.observes('latLngRad'),
+    }
+  }.observes('latLngRad', 'showCampgrounds'),
 
   _setBoundsFromMap: function(map) {
     // r = radius of the earth in km

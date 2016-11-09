@@ -15,6 +15,7 @@ export default Ember.Component.extend({
   insectaChecked: false,
   molluscaChecked: false,
   reptillaChecked: false,
+  campgroundsChecked: false,
   loading: false,
 
   onDetailChange: Ember.observer('locationService.detail', function() {
@@ -101,6 +102,14 @@ export default Ember.Component.extend({
       this.get('locationService').removeTaxa('Reptilia');
     }
   }.observes('reptillaChecked'),
+
+  onCampgroundsChange: function() {
+    if(this.get('campgroundsChecked')) {
+      this.get('locationService').set('showCampgrounds', true);
+    } else {
+      this.get('locationService').set('showCampgrounds', false);
+    }
+  }.observes('campgroundsChecked'),
 
   actions: {
     updateMap() {

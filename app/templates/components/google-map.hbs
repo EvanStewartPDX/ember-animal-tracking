@@ -102,6 +102,16 @@
         Reptiles
       </label>
     </div>
+
+    <div class="checkbox-inline">
+      <label>
+        {{input type="checkbox" checked=campgroundsChecked}}
+        {{#if campgroundsChecked}}
+          <img src="http://maps.google.com/mapfiles/ms/icons/campground.png" class='markerImg'>
+        {{/if}}
+        Trails/campgrounds
+      </label>
+    </div>
   </div>
 {{/if}}
 
