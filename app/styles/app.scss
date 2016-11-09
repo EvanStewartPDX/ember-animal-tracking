@@ -25,16 +25,6 @@ header {
   width: 100%;
 }
 
-.headertext {
-  color: white;
-  position: relative;
-  top: -320px;
-  left: 100px;
-  font-size: 48px;
-  border: 2px solid white;
-  width: 200px;
-
-}
 
 #signin {
   position: relative;
@@ -129,6 +119,10 @@ overflow: auto;
   background-color: #FAB799;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> mollylaura
 #signupbtn {
   position: absolute;
   left: 200px;
@@ -159,7 +153,7 @@ overflow: auto;
 }
 
 
-.row img {
+.row,  img {
   float: left;
 }
 
@@ -172,7 +166,7 @@ overflow: auto;
   left: 50px;
   opacity: 0.9;
 }
+
 #address {
   width: 30vw;
-
 }
