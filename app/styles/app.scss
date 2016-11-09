@@ -131,7 +131,7 @@ overflow: auto;
   top: -190px;
 }
 
-  img {
+.homepage-row img {
   border-radius: 580px;
   border: 5px solid white;
   opacity: 0.4px;
@@ -140,7 +140,7 @@ overflow: auto;
 }
 
 
-.row {
+.homepage-row {
   position: absolute;
   top: 550px;
   width: 84%;
@@ -149,7 +149,7 @@ overflow: auto;
 }
 
 
-.row,  img {
+.homepage-row,  .homepage-row img {
   float: left;
 }
 
