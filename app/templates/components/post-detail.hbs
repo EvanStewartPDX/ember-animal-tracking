@@ -7,5 +7,5 @@
 {{new-reply post=post saveReply="saveReply"}}
 
 {{#each post.replies as |reply|}}
-  {{reply-tile reply=reply}}
+  {{reply-tile reply=reply deleteReply="deleteReply"}}
 {{/each}}
