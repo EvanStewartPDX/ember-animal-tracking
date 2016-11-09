@@ -137,12 +137,34 @@ overflow: auto;
   top: -190px;
 }
 
-.row {
-  border: 2px solid white;
-  padding: -10px;
-}
-.col-md-6, img {
-  position: relative;
+  img {
+  border-radius: 580px;
   border: 5px solid white;
   opacity: 0.4px;
+  width: 200px;
+  height: 200px;
+}
+
+
+.row {
+  position: absolute;
+  top: 550px;
+  width: 84%;
+  margin: 0 auto;
+  // display: inline-flex;
+}
+
+
+.row img {
+  float: left;
+}
+
+.info {
+  position: absolute;
+  border: 3px solid white;
+  width: 500px;
+  background-color: white;
+  border-radius: 10px;
+  left: 50px;
+  opacity: 0.9;
 }
