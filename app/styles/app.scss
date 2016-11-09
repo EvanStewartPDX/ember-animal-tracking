@@ -3,7 +3,6 @@
 
 .map-canvas {
     height: 700px;
-    width: 700px;
 }
 
 img {
@@ -12,6 +11,7 @@ img {
 
 header {
   position: relative;
+  overflow: hidden;
 }
 
 .headerimg {
@@ -112,9 +112,17 @@ border-radius: 8px;
 overflow: auto;
 }
 
+.form-group {
+  padding-right: 15px;
+}
+
 #newPostBtn {
   position: absolute;
   left: 400px;
   width: 600px;
   background-color: #FAB799;
+}
+
+#address {
+  width: 30vw;
 }
