@@ -7,7 +7,15 @@ export default Ember.Service.extend({
   loading: false,
   activities: Ember.A([]),
   mapBounds: null,
-  taxa: null,
+  taxas: Ember.A([]),
+  Aves: Ember.A([]),
+  Mammalia: Ember.A([]),
+  Amphibia: Ember.A([]),
+  Arachnida: Ember.A([]),
+  Fungi: Ember.A([]),
+  Insecta: Ember.A([]),
+  Mollusca: Ember.A([]),
+  Reptilia: Ember.A([]),
 
   getLatLngFromZip(address, fn) {
     var geocoder = new window.google.maps.Geocoder();
@@ -25,20 +33,65 @@ export default Ember.Service.extend({
     });
   },
 
-  addMap(container, lat, lng, zoom) {
+  addMap(container, lat, lng, miles) {
+    var zoomLevel = this.convertMilesToZoomLevel(miles);
     var service = this;
     var google = window.google;
     if(lat && lng) {
       var options = {
           center: new google.maps.LatLng(lat, lng),
           mapTypeId: 'satellite',
-          zoom: zoom
+          zoom: zoomLevel
       };
       var map = new google.maps.Map(container, options);
       service.set('map', map);
       google.maps.event.addListener(map, 'idle', function() { service._setBoundsFromMap(map); });
       return map;
     }
+  },
+
+  setZoom(miles) {
+    var map = this.get('map');
+    if(map) {
+      var zoomLevel = this.convertMilesToZoomLevel(miles);
+      map.setZoom(zoomLevel);
+    }
+  },
+
+  convertMilesToZoomLevel(miles) {
+    var zoomLevel;
+    switch(miles) {
+      case 1:
+        zoomLevel = 14;
+        break;
+      case 7:
+        zoomLevel = 12;
+        break;
+      case 16:
+        zoomLevel = 10;
+        break;
+      case 40:
+        zoomLevel = 9;
+        break;
+      case 90:
+        zoomLevel = 8;
+        break;
+      case 160:
+        zoomLevel = 7;
+        break;
+    }
+    return zoomLevel;
+  },
+
+  removeTaxa(taxa) {
+    this.get('taxas').removeObject(taxa);
+    this.get(taxa).forEach(marker => {
+      marker.setMap(null);
+    });
+  },
+
+  addTaxa(taxa) {
+    this.get('taxas').pushObject(taxa);
   },
 
   addMarker(map, lat, lng, title, id, markerImg, type) {
@@ -77,6 +130,7 @@ export default Ember.Service.extend({
       service.set('openWindow', this);
       infowindow.open(map, this);
     });
+    return marker;
   },
 
   createMarkerImgFromColor(color) {
@@ -93,56 +147,79 @@ export default Ember.Service.extend({
   },
 
   getResultsByBounds: function() {
-    // this.getCampsites(map, lat, lng, radius);
     var service = this;
-    var taxa = service.get('taxa');
+    var taxas = service.get('taxas');
     var mapBounds = service.get('mapBounds');
     var map = service.get('map');
-    if(taxa && mapBounds) {
-      return Ember.$.get(`http://api.inaturalist.org/v1/observations?iconic_taxa=${taxa}&per_page=200&&page=1&nelat=${mapBounds.nelat}&nelng=${mapBounds.nelng}&swlat=${mapBounds.swlat}&swlng=${mapBounds.swlng}&updated_since=2016&order=desc&order_by=votes`).then(data => {
+    if(taxas.get('length') > 0 && mapBounds) {
+      var taxaURL = "";
+      taxas.forEach(taxa => {
+        taxaURL += taxa + '%2C';
+      });
+      console.log(taxaURL);
+      return Ember.$.get(`http://api.inaturalist.org/v1/observations?iconic_taxa=${taxaURL}&per_page=200&&page=1&nelat=${mapBounds.nelat}&nelng=${mapBounds.nelng}&swlat=${mapBounds.swlat}&swlng=${mapBounds.swlng}&updated_since=2016&order=desc&order_by=votes`).then(data => {
         data.results.forEach(result => {
-          var location = result.location.split(',');
-          var color = '000000';
-          switch(result.taxon.iconic_taxon_name) {
-            case 'Aves':
-              color = 'CC0000';
-              break;
-            case 'Mammalia':
-              color = '0000CC';
-              break;
-            case 'Amphibia':
-              color = '00CC00';
-              break;
-            case 'Arachnida':
-              color = '00CCCC';
-              break;
-            case 'Fungi':
-              color = 'CCCC00';
-              break;
-            case 'Insecta':
-              color = '00A0A0';
-              break;
-            case 'Mollusca':
-              color = '9932CC';
-              break;
-            case 'Reptilia':
-              color = 'FFA500';
-              break;
-            }
-            var markerImg = this.createMarkerImgFromColor(color);
-          if(location) {
-            var title;
-            if (result.species_guess) {
-              title = result.species_guess;
-            } else {
-              title = result.taxon.name;
-            }
-            service.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), title, result.id, markerImg, 'animal');
-          }
+          this.createMarkerForAnimal(result, map);
         });
       });
     }
-  }.observes('mapBounds', 'taxa'),
+  }.observes('mapBounds', 'taxas.@each'),
+
+  createMarkerForAnimal(result, map) {
+    var location = result.location.split(',');
+    if(location) {
+      var title;
+      if (result.species_guess) {
+        title = result.species_guess;
+      } else {
+        title = result.taxon.name;
+      }
+      var markerImg;
+      var marker;
+      switch(result.taxon.iconic_taxon_name) {
+        case 'Aves':
+          markerImg = this.createMarkerImgFromColor('CC0000');
+          marker = this.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), title, result.id, markerImg, 'animal');
+          this.get('Aves').pushObject(marker);
+          break;
+        case 'Mammalia':
+          markerImg = this.createMarkerImgFromColor('0000CC');
+          marker = this.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), title, result.id, markerImg, 'animal');
+          this.get('Mammalia').pushObject(marker);
+          break;
+        case 'Amphibia':
+          markerImg = this.createMarkerImgFromColor('00CC00');
+          marker = this.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), title, result.id, markerImg, 'animal');
+          this.get('Amphibia').pushObject(marker);
+          break;
+        case 'Arachnida':
+          markerImg = this.createMarkerImgFromColor('00CCCC');
+          marker = this.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), title, result.id, markerImg, 'animal');
+          this.get('Arachnida').pushObject(marker);
+          break;
+        case 'Fungi':
+          markerImg = this.createMarkerImgFromColor('CCCC00');
+          marker = this.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), title, result.id, markerImg, 'animal');
+          this.get('Fungi').pushObject(marker);
+          break;
+        case 'Insecta':
+          markerImg = this.createMarkerImgFromColor('00A0A0');
+          marker = this.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), title, result.id, markerImg, 'animal');
+          this.get('Insecta').pushObject(marker);
+          break;
+        case 'Mollusca':
+          markerImg = this.createMarkerImgFromColor('9932CC');
+          marker = this.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), title, result.id, markerImg, 'animal');
+          this.get('Mollusca').pushObject(marker);
+          break;
+        case 'Reptilia':
+          markerImg = this.createMarkerImgFromColor('FFA500');
+          marker = this.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), title, result.id, markerImg, 'animal');
+          this.get('Reptilia').pushObject(marker);
+          break;
+        }
+    }
+  },
 
 
   getSingleResults(id) {
@@ -157,7 +234,6 @@ export default Ember.Service.extend({
   },
 
   getCampsites: function() {
-    //map, lat, lng, radius
     var service = this;
     var latLngRad = this.get('latLngRad');
     var map = this.get('map');

@@ -20,9 +20,7 @@
   <button class='btn btn-success' type='submit'>Show map</button>
 </form>
 
-{{#if loading}}
-  <h1>Loading...</h1>
-{{/if}}
+{{#if map}}
 <div class="form-group">
 
     <div class="checkbox-inline">
@@ -104,8 +102,9 @@
         Reptiles
       </label>
     </div>
-
   </div>
+{{/if}}
+
 <div class='row'>
   <div class='col-md-7'>
     <div class="map-canvas"></div>
