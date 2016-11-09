@@ -24,7 +24,6 @@ export default Ember.Component.extend({
   }).on('init'),
 
   insertMap: function() {
-
     var locationService = this.get('locationService');
     var lat = this.get('lat');
     var lng = this.get('lng');
