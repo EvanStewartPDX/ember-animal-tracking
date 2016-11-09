@@ -156,7 +156,6 @@ export default Ember.Service.extend({
       taxas.forEach(taxa => {
         taxaURL += taxa + '%2C';
       });
-      console.log(taxaURL);
       return Ember.$.get(`http://api.inaturalist.org/v1/observations?iconic_taxa=${taxaURL}&per_page=200&&page=1&nelat=${mapBounds.nelat}&nelng=${mapBounds.nelng}&swlat=${mapBounds.swlat}&swlng=${mapBounds.swlng}&updated_since=2016&order=desc&order_by=votes`).then(data => {
         data.results.forEach(result => {
           this.createMarkerForAnimal(result, map);
