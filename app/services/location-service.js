@@ -6,6 +6,7 @@ export default Ember.Service.extend({
   detail: null,
   loading: false,
   activities: Ember.A([]),
+  taxa: null,
 
   getLatLngFromZip(address, fn) {
     var geocoder = new window.google.maps.Geocoder();
@@ -24,6 +25,7 @@ export default Ember.Service.extend({
   },
 
   addMap(container, lat, lng, zoom) {
+    var service = this;
     if(lat && lng) {
       var options = {
           center: new window.google.maps.LatLng(lat, lng),
@@ -38,16 +40,13 @@ export default Ember.Service.extend({
             infowindow.close();
         }
       });
-      // google.maps.event.addListener(map,'bounds_changed', function() {
-      //   var swLat = map.getBounds().getSouthWest().lat();
-      //  var swLng = map.getBounds().getSouthWest().lng();
-      //  var neLat = map.getBounds().getNorthEast().lat();
-      //  var neLng = map.getBounds().getNorthEast().lng();
-      //  console.log('swLat: ' + swLat);
-      //  console.log('swLng: ' + swLng);
-      //  console.log('neLat: ' + neLat);
-      //  console.log('neLng: ' + neLng);
-      // });
+      google.maps.event.addListener(map, 'idle', function() {
+        var swlat = map.getBounds().getSouthWest().lat();
+        var swlng = map.getBounds().getSouthWest().lng();
+        var nelat = map.getBounds().getNorthEast().lat();
+        var nelng = map.getBounds().getNorthEast().lng();
+        service.getResultsByBounds(map, nelat, nelng, swlat, swlng, service.get('taxa'));
+      });
       return map;
     }
   },
@@ -106,6 +105,7 @@ export default Ember.Service.extend({
   getResults(map, lat, lng, radius, taxa) {
     this.getCampsites(map, lat, lng, radius);
     var service = this;
+    service.set('taxa', taxa);
     return Ember.$.get(`http://api.inaturalist.org/v1/observations?iconic_taxa=${taxa}&per_page=200&radius=${radius}&page=1&lat=${lat}&lng=${lng}&updated_since=2016&order=desc&order_by=votes`).then(data => {
       data.results.forEach(result => {
         var location = result.location.split(',');
@@ -149,6 +149,54 @@ export default Ember.Service.extend({
       });
     });
   },
+
+  getResultsByBounds(map, nelat, nelng, swlat, swlng, taxa) {
+    // this.getCampsites(map, lat, lng, radius);
+    var service = this;
+    return Ember.$.get(`http://api.inaturalist.org/v1/observations?iconic_taxa=${taxa}&per_page=200&&page=1&nelat=${nelat}&nelng=${nelng}&swlat=${swlat}&swlng=${swlng}&updated_since=2016&order=desc&order_by=votes`).then(data => {
+      data.results.forEach(result => {
+        var location = result.location.split(',');
+        var color = '000000';
+        switch(result.taxon.iconic_taxon_name) {
+          case 'Aves':
+            color = 'CC0000';
+            break;
+          case 'Mammalia':
+            color = '0000CC';
+            break;
+          case 'Amphibia':
+            color = '00CC00';
+            break;
+          case 'Arachnida':
+            color = '00CCCC';
+            break;
+          case 'Fungi':
+            color = 'CCCC00';
+            break;
+          case 'Insecta':
+            color = '00A0A0';
+            break;
+          case 'Mollusca':
+            color = '9932CC';
+            break;
+          case 'Reptilia':
+            color = 'FFA500';
+            break;
+          }
+          var markerImg = this.createMarkerImgFromColor(color);
+        if(location) {
+          var title;
+          if (result.species_guess) {
+            title = result.species_guess;
+          } else {
+            title = result.taxon.name;
+          }
+          service.addMarker(map, parseFloat(location[0]), parseFloat(location[1]), title, result.id, markerImg, 'animal');
+        }
+      });
+    });
+  },
+
 
   getSingleResults(id) {
     return Ember.$.get(`http://api.inaturalist.org/v1/observations/${id}`).then(data => {
