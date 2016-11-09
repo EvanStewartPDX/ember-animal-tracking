@@ -1,4 +1,3 @@
-<h3> Sign Up!</h3>
 {{#if signupFormOpen}}
   {{#modal-dialog
                   translucentOverlay=true}}
@@ -17,11 +16,11 @@
         <label for="newAvatar">Avatar url</label>
         {{input value=newAvatar id="newAvatar"}}
       </div>
-      <button class="btn btn-info" {{action 'saveUser'}}>Sign up!</button>
+      <button class="btn btn-info"  {{action 'saveUser'}}>Sign up!</button>
       <button class="btn btn-warning" {{action 'hideSignupForm'}}>Hide Signup Form</button>
     </div>
     </form>
   {{/modal-dialog}}
 {{else}}
-  <button class="btn btn-info" {{action 'showSingupForm'}}>Show Signup Form</button>
+  <button class="btn btn-info"id="signupbtn"{{action 'showSingupForm'}}>Show Signup Form</button>
 {{/if}}

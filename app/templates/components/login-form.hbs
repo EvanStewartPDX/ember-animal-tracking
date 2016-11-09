@@ -1,4 +1,3 @@
-<h3> Login!</h3>
 {{#if loginFormOpen}}
   {{#modal-dialog
                   translucentOverlay=true}}
@@ -20,5 +19,5 @@
     </form>
   {{/modal-dialog}}
 {{else}}
-  <button class="btn btn-info" {{action 'showLoginForm'}}>Show Login Form</button>
+  <button class="btn btn-info" id="loginbtn" {{action 'showLoginForm'}}>Show Login Form</button>
 {{/if}}
