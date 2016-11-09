@@ -19,7 +19,6 @@ export default Ember.Component.extend({
 
   onDetailChange: Ember.observer('locationService.detail', function() {
     var locationService = this.get('locationService');
-    // console.log(locationService.detail);
     this.set('detail', locationService.detail);
   }).on('init'),
 
@@ -29,32 +28,6 @@ export default Ember.Component.extend({
     var lng = this.get('lng');
     var container = this.$('.map-canvas')[0];
     if(lat && lng) {
-      this.set('loading', true);
-      var taxa = "";
-      if(this.get('avesChecked')) {
-        taxa += 'Aves%2C';
-      }
-      if(this.get('mammaliaChecked')) {
-        taxa += 'Mammalia%2C';
-      }
-      if(this.get('amphibiansChecked')) {
-        taxa += 'Amphibia%2C';
-      }
-      if(this.get('arachnidaChecked')) {
-        taxa += 'Arachnida%2C';
-      }
-      if(this.get('fungiChecked')) {
-        taxa += 'Fungi%2C';
-      }
-      if(this.get('insectaChecked')) {
-        taxa += 'Insecta%2C';
-      }
-      if(this.get('molluscaChecked')) {
-        taxa += 'Mollusca%2C';
-      }
-      if(this.get('reptillaChecked')) {
-        taxa += 'Reptilia%2C';
-      }
 
       var zoom;
       switch(this.get('radius')) {
@@ -81,15 +54,44 @@ export default Ember.Component.extend({
       var map = locationService.addMap(container, lat, lng, zoom);
       this.set('map', map);
       var radius = this.get('radius');
-      locationService.getResults(map, lat, lng, radius, taxa).then(() => {
-        this.set('loading', false);
-      });
     }
-  }.observes('lat', 'lng', 'radius', 'avesChecked', 'mammaliaChecked', 'amphibiansChecked', 'arachnidaChecked', 'fungiChecked', 'insectaChecked', 'molluscaChecked', 'reptillaChecked'),
+  }.observes('lat', 'lng', 'radius'),
+
+  setTaxa: function() {
+    var locationService = this.get('locationService');
+    var map = this.get('map');
+    var taxa = "";
+    if(this.get('avesChecked')) {
+      taxa += 'Aves%2C';
+    }
+    if(this.get('mammaliaChecked')) {
+      taxa += 'Mammalia%2C';
+    }
+    if(this.get('amphibiansChecked')) {
+      taxa += 'Amphibia%2C';
+    }
+    if(this.get('arachnidaChecked')) {
+      taxa += 'Arachnida%2C';
+    }
+    if(this.get('fungiChecked')) {
+      taxa += 'Fungi%2C';
+    }
+    if(this.get('insectaChecked')) {
+      taxa += 'Insecta%2C';
+    }
+    if(this.get('molluscaChecked')) {
+      taxa += 'Mollusca%2C';
+    }
+    if(this.get('reptillaChecked')) {
+      taxa += 'Reptilia%2C';
+    }
+    console.log(taxa);
+    locationService.set('taxa', taxa);
+    // locationService..getResultsByBounds(map, nelat, nelng, swlat, swlng, service.get('taxa'));
+  }.observes('avesChecked', 'mammaliaChecked', 'amphibiansChecked', 'arachnidaChecked', 'fungiChecked', 'insectaChecked', 'molluscaChecked', 'reptillaChecked'),
 
   actions: {
     updateMap() {
-      this.set('loading', true);
       var locationService = this.get('locationService');
       var component = this;
       var address = this.get('address');
