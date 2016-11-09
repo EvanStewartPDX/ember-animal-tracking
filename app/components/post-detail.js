@@ -7,6 +7,10 @@ export default Ember.Component.extend({
     },
     update(post, params) {
       this.sendAction('update', post, params);
+      console.log(params.content);
+    },
+    saveReply(params) {
+      this.sendAction('saveReply', params);
     }
   }
 });
