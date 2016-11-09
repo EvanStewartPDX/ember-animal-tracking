@@ -1,13 +1,13 @@
-<form {{action 'updateMap' on='submit'}}>
+<form class='form-inline' {{action 'updateMap' on='submit'}}>
 
   <div class='form-group'>
-    <label for='address'>Place</label>
+    <label for='address'>Location</label>
     {{input id='address' value=address required=true type=text class='form-control'}}
   </div>
 
-    <div class="form">
+    <div class="form-group">
       <label for="radius">Radius in Miles</label>
-      <select class="form" id="radius" onchange={{action 'radiusChange' value='target.value'}}>
+      <select class="form-control" id="radius" onchange={{action 'radiusChange' value='target.value'}}>
         <option value="1">1</option>
         <option value="7">5</option>
         <option value="16">10</option>
@@ -106,8 +106,7 @@
 {{/if}}
 
 <div class='row'>
-  <div class='col-md-7'>
-    <div class="map-canvas"></div>
+  <div class='col-md-7 map-canvas'>
   </div>
   <div class='col-md-5'>
     {{#if (eq locationService.detail_type 'animal')}}

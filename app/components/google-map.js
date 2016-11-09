@@ -28,28 +28,6 @@ export default Ember.Component.extend({
     var lng = this.get('lng');
     var container = this.$('.map-canvas')[0];
     if(lat && lng) {
-
-      // var zoom;
-      // switch(this.get('radius')) {
-      //   case 1:
-      //     zoom = 14;
-      //     break;
-      //   case 7:
-      //     zoom = 12;
-      //     break;
-      //   case 16:
-      //     zoom = 10;
-      //     break;
-      //   case 40:
-      //     zoom = 9;
-      //     break;
-      //   case 90:
-      //     zoom = 8;
-      //     break;
-      //   case 160:
-      //     zoom = 7;
-      //     break;
-      // }
       var radius = this.get('radius');
       var map = locationService.addMap(container, lat, lng, radius);
       this.set('map', map);
