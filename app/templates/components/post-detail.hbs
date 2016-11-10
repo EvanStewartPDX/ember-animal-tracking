@@ -1,5 +1,5 @@
-<div class="well">
-  <h4>Author: {{post.author}} asks...</h4><br />
+<div class="well postwell">
+  <h3><b>{{post.author}}</b> asks...</h3><br />
   <h4>{{post.content}}</h4>
 </div>
 
@@ -15,5 +15,7 @@
   </div>
 </div>
 {{#each post.replies as |reply|}}
+<div class="panel">
   {{reply-tile reply=reply deleteReply="deleteReply"}}
+</div>
 {{/each}}

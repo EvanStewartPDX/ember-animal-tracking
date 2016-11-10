@@ -14,6 +14,9 @@ export default Ember.Component.extend({
       };
       this.set('addNewReply', false);
       this.sendAction('saveReply', params);
-    }
+    },
+    hideReplyForm() {
+      this.set('addNewReply', false);
+    },
   }
 });

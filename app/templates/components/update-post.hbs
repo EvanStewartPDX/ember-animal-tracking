@@ -1,6 +1,7 @@
 {{#if updatePostForm}}
   <h4>Update {{post.author}}'s post</h4>
-  {{#modal-dialog}}
+  {{#modal-dialog
+    translucentOverlay=true}}
     <div>
       <form>
         <div class="form-group">
@@ -19,6 +20,7 @@
         </div>
 
         <button {{action 'update' post}}>Save</button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden='true' {{action 'hideUpdateForm'}}><span class='glyphicon glyphicon-remove' style="color: red"></span></button>
       </form>
     </div>
   {{/modal-dialog}}

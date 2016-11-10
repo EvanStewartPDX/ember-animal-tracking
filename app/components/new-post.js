@@ -14,6 +14,10 @@ export default Ember.Component.extend({
       };
       this.set('addNewPost', false);
       this.sendAction('savePost', params);
-    }
+    },
+
+  hidePostForm() {
+    this.set('addNewPost', false);
+  },
   }
 });

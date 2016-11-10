@@ -20,7 +20,7 @@ export default Ember.Route.extend({
           alert("Password did not match username provided");
         }
         else {
-          alert("You have successfully logged in!");
+          // alert("You have successfully logged in!");
           params.user.login(foundUser.get('firstObject'));
           route.replaceWith('map');
         }
