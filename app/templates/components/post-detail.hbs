@@ -1,6 +1,9 @@
-{{post.author}}
-{{post.content}}
+<div class="well">
+  <h4>Author: {{post.author}} asks...</h4><br />
+  <h4>{{post.content}}</h4>
+</div>
 
+<div class="row">
 {{update-post update="update" post=post}}
 <button class="btn btn-danger" {{action 'delete' post}}>Delete</button>
 
@@ -9,3 +12,4 @@
 {{#each post.replies as |reply|}}
   {{reply-tile reply=reply deleteReply="deleteReply"}}
 {{/each}}
+</div>

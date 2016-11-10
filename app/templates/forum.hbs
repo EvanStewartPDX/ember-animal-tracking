@@ -3,9 +3,13 @@
       <p></p>Feel free to post any questions or comments you have as a wildlife tracker!</h3>
   </center>
 {{user-tile3}}
-
+<div class="row">
   {{new-post savePost="savePost"}}
-
+</div>
+<div class="row">
   {{#each model.posts as |post|}}
-  {{post-tile post=post}}
+    <div class="panel panel-default">
+      {{post-tile post=post}}
+    </div>
   {{/each}}
+</div>

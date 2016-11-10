@@ -120,10 +120,14 @@
   </div>
   <div class='col-md-5'>
     {{#if (eq locationService.detail_type 'animal')}}
+    <div class="well">
       {{wildlife-detail detail=locationService.detail}}
+    </div>
     {{/if}}
     {{#if (eq locationService.detail_type 'activity')}}
+    <div class="well">
       {{activity-detail detail=locationService.detail}}
+    </div>
     {{/if}}
   </div>
 </div>
