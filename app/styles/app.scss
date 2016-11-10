@@ -13,7 +13,6 @@ header {
   position: relative;
   border-radius: 15px;
   border: 2px solid white;
-
   height: 300px;
   padding: 0px;
   background-image: url('http://www.photoscapesbymargaret.com/wp-content/uploads/2012/11/canadian-grizzly-and-cubs-wildlife.jpg');
@@ -180,12 +179,14 @@ margin: 20px;
   position: relative;
   top: -200px;
   left: 50px;
-  color: gray;
+  color: black;
   border: 3px solid white;
-  width: 10%;
+  width: 20%;
   background-color: white;
   border-radius: 5px;
   opacity: 0.9;
+  text-align: center;
+  font-family: 'Lobster', cursive;
 
 }
 .well {
