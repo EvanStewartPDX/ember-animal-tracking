@@ -191,3 +191,21 @@ margin: 20px;
 .well {
   padding: 5px;
 }
+
+.tile {
+position: absolute;
+right: -100px;
+top: 250px;
+border: 1px solid white;
+width: 20%;
+}
+
+.username {
+  position: absolute;
+  right: 210px;
+  color: white;
+  border: 1px solid white;
+  background-color: #009696;
+  border-radius: 5px;
+  padding: 2px;
+}
