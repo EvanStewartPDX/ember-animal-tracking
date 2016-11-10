@@ -1,6 +1,6 @@
 
-<h3>{{reply.author}}</h3>
-{{reply.content}}
+<h3><u>{{reply.author}} says,</u></h3>
+<i>{{reply.content}}</i>
 
 
-<button class="btn btn-danger" {{action 'deleteReply' reply}}>Delete</button>
+<button class="btn btn-default" {{action 'deleteReply' reply}}>Delete</button>

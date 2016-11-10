@@ -37,7 +37,7 @@ body {
   position: absolute;
   top: -250px;
   right: 350px;
-  border: 8px solid #009696;
+  border: 2px solid #009696;
   height: 100px;
   width: 100px;
   border-radius: 280px;
@@ -230,8 +230,11 @@ width: 20%;
   width: 300px;
   max-height: 200px;
   padding: 5px;
-  border: solid gray;
+  border: 1px solid white;
   overflow: auto;
+  background-color: #79B0C8;
+  opacity: 0.8;
+  color: white;
 
   .btn {
     float: right;
@@ -243,5 +246,9 @@ width: 20%;
   width: 600px;
   align-items: center;
   margin: 10px;
-  border: solid black;
+  border: solid white;
+  border-radius: 3px;
+  background-color: #009696;
+  opacity: 0.8;
+  color: white;
 }

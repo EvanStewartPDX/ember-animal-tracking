@@ -1,5 +1,6 @@
 <div class="well postwell">
-  <h3><b>{{post.author}}</b> asks...</h3><br />
+  <h3><b>{{post.author}}</b> asks...
+    <p></p>{{post.title}}</h3><br />
   <h4>{{post.content}}</h4>
 </div>
 
@@ -8,7 +9,7 @@
     {{update-post update="update" post=post}}
   </div>
   <div class='button-cell'>
-    <button class="btn btn-danger" {{action 'delete' post}}>Delete</button>
+    <button class="btn btn-default" {{action 'delete' post}}>Delete</button>
   </div>
   <div class='button-cell'>
     {{new-reply post=post saveReply="saveReply"}}
