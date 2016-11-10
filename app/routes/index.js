@@ -20,7 +20,7 @@ export default Ember.Route.extend({
           alert("Password did not match username provided");
         }
         else {
-          // alert("You have successfully logged in!");
+          alert("You have successfully logged in!");
           params.user.login(foundUser.get('firstObject'));
           // route.replaceWith('map');
         }
@@ -30,10 +30,27 @@ export default Ember.Route.extend({
     },
 
     saveUser(params) {
-      var newUser = this.store.createRecord('user', params);
-      newUser.save();
-      this.transitionTo('index');
-      alert('Congratulations, you have successfully signed up with WILDLIFE TRACKER! Now log in with your credentials.');
+      var route=this;
+      this.store.query('user', {
+        orderBy: 'username',
+        equalTo: params.username
+      }). then (function(foundUser) {
+        if(foundUser.get('length')===0) {
+          var newUser = this.store.createRecord('user', params);
+          newUser.save();
+          this.transitionTo('index');
+          alert('Congratulations, you have successfully signed up with WILDLIFE TRACKER! Now log in with your credentials.');
+        }
+
+        else {
+          alert("Username already exists");
+          // route.replaceWith('map');
+        }
+      }, function(error) {
+        console.log(error);
+      });
+
+
     }
   }
 });
