@@ -3,13 +3,17 @@
   <h4>{{post.content}}</h4>
 </div>
 
-<div class="row">
-{{update-post update="update" post=post}}
-<button class="btn btn-danger" {{action 'delete' post}}>Delete</button>
-
-{{new-reply post=post saveReply="saveReply"}}
-
+<div class='button-row'>
+  <div class='button-cell'>
+    {{update-post update="update" post=post}}
+  </div>
+  <div class='button-cell'>
+    <button class="btn btn-danger" {{action 'delete' post}}>Delete</button>
+  </div>
+  <div class='button-cell'>
+    {{new-reply post=post saveReply="saveReply"}}
+  </div>
+</div>
 {{#each post.replies as |reply|}}
   {{reply-tile reply=reply deleteReply="deleteReply"}}
 {{/each}}
-</div>
