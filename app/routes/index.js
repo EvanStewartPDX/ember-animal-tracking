@@ -22,7 +22,7 @@ export default Ember.Route.extend({
         else {
           alert("You have successfully logged in!");
           params.user.login(foundUser.get('firstObject'));
-          route.replaceWith('map');
+          // route.replaceWith('map');
         }
       }, function(error) {
         console.log(error);
