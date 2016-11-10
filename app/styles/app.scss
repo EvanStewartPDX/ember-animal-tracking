@@ -11,19 +11,17 @@ img {
 
 header {
   position: relative;
-  overflow: hidden;
+  border-radius: 15px;
+  border: 2px solid white;
+  width: 70%;
+  height: 300px;
+  padding: 0px;
+  background-image: url('http://www.photoscapesbymargaret.com/wp-content/uploads/2012/11/canadian-grizzly-and-cubs-wildlife.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
-.headerimg {
-  position: relative;
-  top: -15px;
-  width: 200%;
-  height: 400px;
-  align-items: center;
-  border-radius: 5px;
-  border: 2px solid white;
-  width: 100%;
-}
+
 
 
 #signin {
@@ -121,14 +119,14 @@ overflow: auto;
 
 #signupbtn {
   position: absolute;
-  left: 200px;
-  top: -30px;
+  left: 670px;
+  top: -40px;
   align-content: center;
 }
 
 #loginbtn {
   position: absolute;
-  top: -30px;
+  top: -40px;
 }
 
 .homepage-row img {
@@ -166,4 +164,18 @@ overflow: auto;
 
 #address {
   width: 30vw;
+}
+
+
+.banner {
+  position: relative;
+  top: -200px;
+  left: 50px;
+  color: gray;
+  border: 3px solid white;
+  width: 10%;
+  background-color: white;
+  border-radius: 5px;
+  opacity: 0.9;
+
 }
