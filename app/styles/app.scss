@@ -36,10 +36,10 @@ body {
 .tileimg {
   position: absolute;
   top: -250px;
-  right: 300px;
+  right: 350px;
   border: 8px solid #009696;
-  height: 150px;
-  width: 150px;
+  height: 100px;
+  width: 100px;
   border-radius: 280px;
 }
 
@@ -84,10 +84,14 @@ body {
   border: 3px solid white;
   width: 400px;
   height: 600px;
+  border: solid #69B8A6;
   border-radius: 9px;
+  padding: 8px;
   height: 250px;
   background-color: white;
   color: #69B8A6;
+  // overflow: auto;
+
 }
 
 
@@ -165,9 +169,9 @@ margin: 20px;
   width: 500px;
   background-color: white;
   border-radius: 10px;
-  left: 50px;
+  left: 120px;
   opacity: 0.9;
-  top: 650px;
+  top: 700px;
 }
 
 #address {
@@ -203,7 +207,8 @@ width: 20%;
 
 .username {
   position: absolute;
-  right: 210px;
+  right: 250px;
+  top: -200px;
   color: white;
   border: 1px solid white;
   background-color: #009696;
@@ -218,4 +223,25 @@ width: 20%;
 
 .button-cell {
   display: table-cell;
+}
+
+.panel {
+  margin: 5px;
+  width: 300px;
+  max-height: 200px;
+  padding: 5px;
+  border: solid gray;
+  overflow: auto;
+
+  .btn {
+    float: right;
+
+  }
+}
+
+.postwell {
+  width: 600px;
+  align-items: center;
+  margin: 10px;
+  border: solid black;
 }
